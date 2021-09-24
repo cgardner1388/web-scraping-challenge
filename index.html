@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <title>Web Scraping Mission To Mars</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container">
+            <div class="jumbotron text-center" style="background-color: rgb(225, 231, 233); padding: auto;">
+                <h1>Mission to Mars</h1>
+                <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+            </div>
+        </div>
+        <div class="container-fluid" id="scraped-data">
+            <h4 class="card-title" id="font">Latest Mars News</h4>
+            <h5 class="media-heading">{{ mars.news_title }}</h5>
+            <p>{{ mars.news_paragraph }}</p>
+        </div>
+        <div class="container-fluid">
+            <div class="row justify-content-between">
+                <div class="col-xl-6">
+                    <h4>Featured Mars Image</h4>
+                    <img src="{{mars.featured_image | default('static/images/error.png', true) }}"
+                        class="img-responsive" alt="Responsive image">
+                </div>
+                <div class="col-xl-4">
+                    <div class="row" style="padding-left: 3%" ; id="mars-facts">
+                        <h5>Mars Facts</h5>
+                        <div class="table-responsive">
+                            {{mars.facts|safe}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container-fluid">
+            <div class="row">
+                <h1 class="text-center">Hemispheres of Mars</h1>
+                <hr>
+                <br>
+                {% for hemisphere in mars.hemispheres %}
+                <div class="col-md-3 text-center">
+                    <div class="card text-center" style="width: auto; height: auto;">
+                        <img class="card-img-top text-center" id="scale_id" src="{{ hemisphere.image_url }}">
+                        <div class="card-body text-center">
+                            <h4 class="card-title text-left" style="height: max-content;">{{ hemisphere.title }}</h4>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

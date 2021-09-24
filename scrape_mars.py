@@ -13,7 +13,7 @@ def scrape():
     browser = init_browser()
     #NASA Mars News
     # URL of page to be scraped
-    url = 'https://mars.nasa.gov/news'
+    url = 'https://redplanetscience.com/'
     browser.visit(url)
 
     #Set an HTML object
@@ -23,13 +23,14 @@ def scrape():
     soup = bs(html, 'html.parser')
 
     # Retrieve the latest element that contains news title and news_paragraph
-    news_title = soup.find_all('div', class_='content_title')[1].text
-    news_p = soup.find_all('div', class_='article_teaser_body')[0].text
+    news_title = soup.find('div', class_='content_title').text
+    news_p = soup.find('div', class_='article_teaser_body').text
     print(news_title)
+    print ('----------')
     print(news_p)
 
     #JPL Mars Space Images - Featured Image
-    space_url = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/index.html'
+    space_url = 'https://spaceimages-mars.com/'
     browser.visit(space_url)
     browser.links.find_by_partial_text('FULL IMAGE').click()
     #Set HTML object
@@ -38,26 +39,21 @@ def scrape():
     # Parse HTML with BS
     soup2 = bs(html_space, 'html.parser')
 
-    image_url = soup2.find('img',attrs={'class':'fancybox-image'})['src']
-    #Website URL
-    web_main_url = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/'
-    
+    image_url = soup2.find("img", class_="headerimage fade-in")["src"]
+
     # Concatenate URL with image_url
-    featured_image_url = web_main_url + image_url
+    featured_image_url = space_url + image_url
     print(featured_image_url)
 
     #Mars Facts
-    mars_url_facts = 'https://space-facts.com/mars/'
+    mars_url_facts ='https://galaxyfacts-mars.com/'
 
     #Create a data frame with the mars facts
-    tables = pd.read_html(mars_url_facts)
-    mars_fact_df = tables[0]
-    
-
-    mars_fact_df.columns = ['Description','Mars Data']
-    
-
-    mars_fact_df.set_index('Description', inplace=True)
+    tables=pd.read_html(mars_url_facts)
+    mars_factsdf=tables[1]
+    mars_factsdf.columns = ['Description', 'Mars']
+    mars_factsdf.set_index('Description', inplace=True)
+    mars_factsdf
     
 
     #mars_fact_df.to_html()
@@ -81,7 +77,7 @@ def scrape():
     hemi_list = []
 
     # URL
-    hemi_main_url = 'https://astrogeology.usgs.gov'
+    hemi_main_url = 'https://marshemispheres.com/'
 
     # For Loop
     for i in item:
